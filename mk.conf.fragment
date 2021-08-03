@@ -1,0 +1,26 @@
+WRKOBJDIR=		/tmp/work
+
+# Doesn't actually matter in bulk builds...
+# Avoid errors from infrastructure.
+PKG_DBDIR=		/var/db/pkg
+
+DISTDIR=		/data/distfiles
+PACKAGES=		/data/packages
+
+SKIP_LICENSE_CHECK=	yes
+FAILOVER_FETCH=		yes
+
+MAKE_JOBS=		2
+
+PKGSRC_MKPIE=		yes
+PKGSRC_MKRERPO=		yes
+PKGSRC_USE_RELRO=	yes
+PKGSRC_USE_SSP=		strong
+
+PYTHON_VERSION_DEFAULT=	39
+LUA_VERSION_DEFAULT=	54
+PHP_VERSION_DEFAULT=	80
+RUBY_VERSION_DEFAULT=	30
+
+PGSQL_VERSION_DEFAULT=	13
+MYSQL_VERSION_DEFAULT=	mariadb105

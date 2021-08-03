@@ -127,7 +127,7 @@ run_postfix() {
 
 stop_postfix() {
 	chroot ${base_path} \
-		/etc/rc.d/postfix ontop
+		/etc/rc.d/postfix onestop
 }
 
 run_build() {

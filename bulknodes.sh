@@ -2,7 +2,6 @@
 
 base_path="/sandbox/nb9-amd64-trunk"
 njobs=16
-port_base=1000
 machine_arch="amd64"
 processor_arch="x86_64"
 os_release="9.2"
@@ -151,7 +150,7 @@ restart_build() {
 
 usage() {
 	printf "Usage: bulknodes.sh [-a processor_arch]"
-	printf " [-m machine_arch] [-r os_release] [-p port_base]"
+	printf " [-m machine_arch] [-r os_release] "
 	printf " [-j njobs] [-b base_path]\n"
 	printf " mount, umount, init-pbulk,"
 	printf " run-build, restart-build, rebuild,"
@@ -171,9 +170,6 @@ do
 	r)
 		os_release=$OPTARG
 		;;
-	p)
-		port_base=$OPTARG
-		;;
 	j)
 		njobs=$OPTARG
 		;;
@@ -190,7 +186,6 @@ shift $((OPTIND - 1))
 printf 'Machine arch: %s\n' "${machine_arch}"
 printf 'Processor arch: %s\n' "${processor_arch}"
 printf 'OS release: %s\n' "${os_release}"
-printf 'Port base: %s\n' "${port_base}"
 printf 'Parallel jobs: %s\n' "${njobs}"
 printf 'Base chroot path: %s\n' "${base_path}"
 

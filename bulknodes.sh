@@ -10,6 +10,7 @@ umount_all() {
 	for i in $(seq "$njobs");
 	do
 		umount "${base_path}/chroot/${i}/data/bulklog"
+		umount "${base_path}/chroot/${i}/data/bulklog.old"
 		umount "${base_path}/chroot/${i}/data/distfiles"
 		umount "${base_path}/chroot/${i}/data/pbulk"
 		umount "${base_path}/chroot/${i}/data/packages"
@@ -42,6 +43,8 @@ mount_all() {
 		mount_tmpfs none "${base_path}/chroot/${i}/"
 		mkdir -p ${base_path}/chroot/${i}/data/bulklog
 		mount_null "${base_path}/data/bulklog" "${base_path}/chroot/${i}/data/bulklog"
+		mkdir -p ${base_path}/chroot/${i}/data/bulklog.old
+		mount_null "${base_path}/data/bulklog.old" "${base_path}/chroot/${i}/data/bulklog.old"
 		mkdir -p ${base_path}/chroot/${i}/data/distfiles
 		mount_null "${base_path}/data/distfiles" "${base_path}/chroot/${i}/data/distfiles"
 		mkdir -p ${base_path}/chroot/${i}/data/pbulk
@@ -92,6 +95,7 @@ mount_all() {
 init_pbulk() {
 	mkdir -p ${base_path}/data/pbulk
 	mkdir -p ${base_path}/data/bulklog
+	mkdir -p ${base_path}/data/bulklog.old
 	mkdir -p ${base_path}/data/packages
 	mkdir -p ${base_path}/data/distfiles
 	if ! [ -f ${base_path}/data/mk.conf.fragment ];

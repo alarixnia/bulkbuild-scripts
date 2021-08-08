@@ -83,7 +83,7 @@ mount_all() {
 		mount_null -o ro "${base_path}/usr/X11R7" "${base_path}/chroot/${i}/usr/X11R7"
 		mkdir -p "${base_path}/chroot/${i}/usr/pkgsrc"
 		mount_null -o ro "${base_path}/usr/pkgsrc" "${base_path}/chroot/${i}/usr/pkgsrc"
-		mkdir -p "${base_path}/chroot/${i}/var"
+		mkdir -p "${base_path}/chroot/${i}/var/tmp"
 		cp -a ${base_path}/var/* "${base_path}/chroot/${i}/var"
 		mkdir -p "${base_path}/chroot/${i}/etc"
 		cp -a ${base_path}/etc/* "${base_path}/chroot/${i}/etc"
@@ -98,6 +98,7 @@ init_pbulk() {
 	mkdir -p ${base_path}/data/bulklog.old
 	mkdir -p ${base_path}/data/packages
 	mkdir -p ${base_path}/data/distfiles
+	mkdir -p ${base_path}/var/tmp
 	if ! [ -f ${base_path}/data/mk.conf.fragment ];
 	then
 		cp mk.conf.fragment ${base_path}/data/mk.conf.fragment

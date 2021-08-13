@@ -1,9 +1,5 @@
 WRKOBJDIR=		/tmp/work
 
-# Doesn't actually matter in bulk builds...
-# Avoid errors from infrastructure.
-PKG_DBDIR=		/var/db/pkg
-
 DISTDIR=		/data/distfiles
 PACKAGES=		/data/packages
 

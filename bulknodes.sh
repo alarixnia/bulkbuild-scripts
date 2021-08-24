@@ -9,8 +9,7 @@ os_release="9.2"
 umount_all() {
 	for i in $(seq "$njobs");
 	do
-		umount "${base_path}/chroot/${i}/data/bulklog"
-		umount "${base_path}/chroot/${i}/data/bulklog.old"
+		umount "${base_path}/chroot/${i}/data/logs"
 		umount "${base_path}/chroot/${i}/data/distfiles"
 		umount "${base_path}/chroot/${i}/data/pbulk"
 		umount "${base_path}/chroot/${i}/data/packages"
@@ -41,10 +40,8 @@ mount_all() {
 	do
 		mkdir -p "${base_path}/chroot/${i}/"
 		mount_tmpfs none "${base_path}/chroot/${i}/"
-		mkdir -p ${base_path}/chroot/${i}/data/bulklog
-		mount_null "${base_path}/data/bulklog" "${base_path}/chroot/${i}/data/bulklog"
-		mkdir -p ${base_path}/chroot/${i}/data/bulklog.old
-		mount_null "${base_path}/data/bulklog.old" "${base_path}/chroot/${i}/data/bulklog.old"
+		mkdir -p ${base_path}/chroot/${i}/data/logs
+		mount_null "${base_path}/data/logs" "${base_path}/chroot/${i}/data/logs"
 		mkdir -p ${base_path}/chroot/${i}/data/distfiles
 		mount_null "${base_path}/data/distfiles" "${base_path}/chroot/${i}/data/distfiles"
 		mkdir -p ${base_path}/chroot/${i}/data/pbulk
@@ -95,8 +92,8 @@ mount_all() {
 
 init_pbulk() {
 	mkdir -p ${base_path}/data/pbulk
-	mkdir -p ${base_path}/data/bulklog
-	mkdir -p ${base_path}/data/bulklog.old
+	mkdir -p ${base_path}/data/logs/bulklog
+	mkdir -p ${base_path}/data/logs/bulklog.old
 	mkdir -p ${base_path}/data/packages
 	mkdir -p ${base_path}/data/distfiles
 	mkdir -p ${base_path}/var/tmp
@@ -113,7 +110,7 @@ init_pbulk() {
 		PBULKWORK=/tmp/work-pbulk \
 		PBULKPREFIX=/data/pbulk \
 		PACKAGES=/data/packages \
-		BULKLOG=/data/bulklog \
+		BULKLOG=/data/logs/bulklog \
 		MAKE_JOBS=${njobs} \
 		sh /usr/pkgsrc/mk/pbulk/pbulk.sh -n \
 		-d "${pbulk_nodes}" -c /data/mk.conf.fragment

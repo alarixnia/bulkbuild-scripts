@@ -58,8 +58,11 @@ mount_all() {
 		mount_null -o ro "${base_path}/bin" "${base_path}/chroot/${i}/bin"
 		mkdir -p "${base_path}/chroot/${i}/sbin"
 		mount_null -o ro "${base_path}/sbin" "${base_path}/chroot/${i}/sbin"
+		# Lib directories are "rw" to allow compat80 etc
+		# to be installed which is needed by some binary language
+		# bootstraps
 		mkdir -p "${base_path}/chroot/${i}/lib"
-		mount_null -o ro "${base_path}/lib" "${base_path}/chroot/${i}/lib"
+		mount_null -o rw "${base_path}/lib" "${base_path}/chroot/${i}/lib"
 		mkdir -p "${base_path}/chroot/${i}/libexec"
 		mount_null -o ro "${base_path}/libexec" "${base_path}/chroot/${i}/libexec"
 		mkdir -p "${base_path}/chroot/${i}/usr/bin"
@@ -69,7 +72,7 @@ mount_all() {
 		mkdir -p "${base_path}/chroot/${i}/usr/include"
 		mount_null -o ro "${base_path}/usr/include" "${base_path}/chroot/${i}/usr/include"
 		mkdir -p "${base_path}/chroot/${i}/usr/lib"
-		mount_null -o ro "${base_path}/usr/lib" "${base_path}/chroot/${i}/usr/lib"
+		mount_null -o rw "${base_path}/usr/lib" "${base_path}/chroot/${i}/usr/lib"
 		mkdir -p "${base_path}/chroot/${i}/usr/libdata"
 		mount_null -o ro "${base_path}/usr/libdata" "${base_path}/chroot/${i}/usr/libdata"
 		mkdir -p "${base_path}/chroot/${i}/usr/libexec"

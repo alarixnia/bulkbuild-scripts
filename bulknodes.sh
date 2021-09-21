@@ -100,6 +100,12 @@ init_pbulk() {
 	mkdir -p ${base_path}/data/packages
 	mkdir -p ${base_path}/data/distfiles
 	mkdir -p ${base_path}/var/tmp
+	mkdir -p ${base_path}/tmp
+	chmod 1777 ${base_path}/tmp
+	mkdir -p ${base_path}/var/shm
+	chmod 1777 ${base_path}/var/shm
+	mkdir -p ${base_path}/var/tmp
+	chmod 1777 ${base_path}/var/tmp
 	if ! [ -f ${base_path}/data/mk.conf.fragment ];
 	then
 		cp mk.conf.fragment ${base_path}/data/mk.conf.fragment

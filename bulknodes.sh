@@ -112,6 +112,7 @@ init_pbulk() {
 	chroot ${base_path} env \
 		PBULKWORK=/tmp/work-pbulk \
 		PBULKPREFIX=/data/pbulk \
+		DISTDIR=/data/distfiles \
 		PACKAGES=/data/packages \
 		BULKLOG=/data/logs/bulklog \
 		MAKE_JOBS=${njobs} \
@@ -120,6 +121,7 @@ init_pbulk() {
 	chroot ${base_path} sh -c \
 		"cd /usr/pkgsrc/pkgtools/libkver && \
 		MAKE_JOBS=${njobs} \
+		DISTDIR=/data/distfiles \
 		PACKAGES=/data/packages \
 		WRKOBJDIR=/tmp/work-pbulk \
 		/data/pbulk/bin/bmake install"

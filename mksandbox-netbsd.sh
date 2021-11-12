@@ -59,7 +59,7 @@ do
 done
 
 echo "Creating /dev..."
-chroot "${base_path}" sh -c "cd /dev && sh MAKEDEV std"
+chroot "${base_path}" sh -c "cd /dev && sh MAKEDEV all"
 
 echo "Copying resolv.conf..."
 cp /etc/resolv.conf ${base_path}/etc/resolv.conf

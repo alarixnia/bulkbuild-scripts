@@ -1,7 +1,7 @@
 #!/bin/sh
 
 base_path="/sandbox/nb9-amd64-trunk"
-njobs=$(sysctl hw.ncpuonline)
+njobs=$(sysctl -n hw.ncpuonline)
 machine_arch=$(uname -m)
 processor_arch=$(uname -p)
 os_release="9.2"

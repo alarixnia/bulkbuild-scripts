@@ -65,3 +65,5 @@ echo "Copying resolv.conf..."
 cp /etc/resolv.conf ${base_path}/etc/resolv.conf
 
 mkdir -p ${base_path}/usr/pkgsrc
+
+echo "Now ensure /usr/pkgsrc is mounted."

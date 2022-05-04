@@ -4,7 +4,7 @@ base_path="/sandbox/nb9-amd64-trunk"
 njobs=$(sysctl -n hw.ncpuonline)
 machine_arch=$(uname -m)
 processor_arch=$(uname -p)
-os_release="9.2"
+os_release=$(uname -r)
 
 umount_all() {
 	for i in $(seq "$njobs");
@@ -130,8 +130,9 @@ init_pbulk() {
 		DISTDIR=/data/distfiles \
 		PACKAGES=/data/packages \
 		WRKOBJDIR=/tmp/work-pbulk \
-		/data/pbulk/bin/bmake install"
+		/data/pbulk/bin/bmake install CHECK_RELRO=no"
 	rm -rf ${base_path}/tmp/work-pbulk
+	echo Now edit pbulk.conf and make.conf.
 }
 
 run_postfix() {

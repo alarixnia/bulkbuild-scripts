@@ -23,11 +23,11 @@ pkgsrc to its /usr/pkg.
 pbulk must be initialized in the base chroot with
 `bulknodes.sh init-pbulk`.  Afterwards the worker chroots can be
 mounted with `bulknodes.sh mount` and the build started with
-`buildnodes.sh `bulknodes.sh run-build`.
+`bulknodes.sh run-build`.
 
 After initialization you may want to edit
 `${base_chroot}/data/pbulk/etc/pbulk.conf` to enable e.g.
-publishing.
+publishing, raise or lower ulimits, etc.
 
 Ideas for later
 ---------------

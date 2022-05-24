@@ -31,7 +31,7 @@ umount_all() {
 		umount "${base_path}/chroot/${i}/usr/libexec" 2>/dev/null
 		umount "${base_path}/chroot/${i}/usr/pkgsrc" 2>/dev/null
 		umount "${base_path}/chroot/${i}/usr/share" 2>/dev/null
-		umount "${base_path}/chroot/${i}/usr/X11R7"
+		umount "${base_path}/chroot/${i}/usr/X11R7" 2>/dev/null
 		umount "${base_path}/chroot/${i}/" 2>/dev/null || \
 		    umount -f "${base_path}/chroot/${i}/" 2>/dev/null
 	done

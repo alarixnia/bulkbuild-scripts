@@ -10,35 +10,37 @@ tmpfs_base=0
 umount_all() {
 	for i in $(seq "$njobs");
 	do
-		umount "${base_path}/chroot/${i}/data/logs"
-		umount "${base_path}/chroot/${i}/data/distfiles"
-		umount "${base_path}/chroot/${i}/data/pbulk"
-		umount "${base_path}/chroot/${i}/data/packages"
-		umount "${base_path}/chroot/${i}/proc"
-		umount "${base_path}/chroot/${i}/tmp" || \
-			umount -f "${base_path}/chroot/${i}/tmp"
-		umount "${base_path}/chroot/${i}/var/shm"
-		umount "${base_path}/chroot/${i}/bin"
-		umount "${base_path}/chroot/${i}/sbin"
-		umount "${base_path}/chroot/${i}/lib"
-		umount "${base_path}/chroot/${i}/libexec"
-		umount "${base_path}/chroot/${i}/usr/bin"
-		umount "${base_path}/chroot/${i}/usr/sbin"
-		umount "${base_path}/chroot/${i}/usr/include"
-		umount "${base_path}/chroot/${i}/usr/lib"
-		umount "${base_path}/chroot/${i}/usr/libdata"
-		umount "${base_path}/chroot/${i}/usr/libexec"
-		umount "${base_path}/chroot/${i}/usr/pkgsrc"
-		umount "${base_path}/chroot/${i}/usr/share"
+		printf "Destroying chroot %d..." "%i"
+		umount "${base_path}/chroot/${i}/data/logs" 2>/dev/null
+		umount "${base_path}/chroot/${i}/data/distfiles" 2>/dev/null
+		umount "${base_path}/chroot/${i}/data/pbulk" 2>/dev/null
+		umount "${base_path}/chroot/${i}/data/packages" 2>/dev/null
+		umount "${base_path}/chroot/${i}/proc" 2>/dev/null
+		umount "${base_path}/chroot/${i}/tmp" 2>/dev/null || \
+		    umount -f "${base_path}/chroot/${i}/" 2>/dev/null
+		umount "${base_path}/chroot/${i}/var/shm" 2>/dev/null
+		umount "${base_path}/chroot/${i}/bin" 2>/dev/null
+		umount "${base_path}/chroot/${i}/sbin" 2>/dev/null
+		umount "${base_path}/chroot/${i}/lib" 2>/dev/null
+		umount "${base_path}/chroot/${i}/libexec" 2>/dev/null
+		umount "${base_path}/chroot/${i}/usr/bin" 2>/dev/null
+		umount "${base_path}/chroot/${i}/usr/sbin" 2>/dev/null
+		umount "${base_path}/chroot/${i}/usr/include" 2>/dev/null
+		umount "${base_path}/chroot/${i}/usr/lib" 2>/dev/null
+		umount "${base_path}/chroot/${i}/usr/libdata" 2>/dev/null
+		umount "${base_path}/chroot/${i}/usr/libexec" 2>/dev/null
+		umount "${base_path}/chroot/${i}/usr/pkgsrc" 2>/dev/null
+		umount "${base_path}/chroot/${i}/usr/share" 2>/dev/null
 		umount "${base_path}/chroot/${i}/usr/X11R7"
-		umount "${base_path}/chroot/${i}/" || \
-			umount -f "${base_path}/chroot/${i}/"
+		umount "${base_path}/chroot/${i}/" 2>/dev/null || \
+		    umount -f "${base_path}/chroot/${i}/" 2>/dev/null
 	done
 }
 
 mount_all() {
 	for i in $(seq "$njobs");
 	do
+		printf "Creating chroot %d..." "%i"
 		mkdir -p "${base_path}/chroot/${i}/"
 		mount_tmpfs none "${base_path}/chroot/${i}/"
 		mkdir -p ${base_path}/chroot/${i}/data/logs

@@ -10,7 +10,7 @@ tmpfs_base=0
 umount_all() {
 	for i in $(seq "$njobs");
 	do
-		printf "Destroying chroot %d..." "$i"
+		printf "Destroying chroot %d...\n" "$i"
 		umount "${base_path}/chroot/${i}/data/logs" 2>/dev/null
 		umount "${base_path}/chroot/${i}/data/distfiles" 2>/dev/null
 		umount "${base_path}/chroot/${i}/data/pbulk" 2>/dev/null
@@ -40,7 +40,7 @@ umount_all() {
 mount_all() {
 	for i in $(seq "$njobs");
 	do
-		printf "Creating chroot %d..." "$i"
+		printf "Creating chroot %d...\n" "$i"
 		mkdir -p "${base_path}/chroot/${i}/"
 		mount_tmpfs none "${base_path}/chroot/${i}/"
 		mkdir -p ${base_path}/chroot/${i}/data/logs

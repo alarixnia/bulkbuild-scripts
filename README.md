@@ -23,17 +23,10 @@ pkgsrc to its /usr/pkg.
 pbulk must be initialized in the base chroot with
 `bulknodes.sh init-pbulk`.  Afterwards the worker chroots can be
 mounted with `bulknodes.sh mount` and the build started with
-`bulknodes.sh run-build`.
+`bulknodes.sh run-build`. Most options to `buildnodes.sh`
+should be fairly self-explanatory. `-t` can be used to store
+most of NetBSD on tmpfs, useful on machines with lots of memory.
 
 After initialization you may want to edit
 `${base_chroot}/data/pbulk/etc/pbulk.conf` to enable e.g.
 publishing, raise or lower ulimits, etc.
-
-Ideas for later
----------------
-
-tmpfs is faster than nullfs, so it may make sense to have
-the NetBSD base system on tmpfs rather than nullfs mounts
-within the parallel chroots.  However, I'm already limited
-by memory building packages on tmpfs with 16 chroots,
-especially when the bulk build reaches Firefox.

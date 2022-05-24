@@ -5,6 +5,7 @@ njobs=$(sysctl -n hw.ncpuonline)
 machine_arch=$(uname -m)
 processor_arch=$(uname -p)
 os_release=$(uname -r)
+tmpfs_base=0
 
 umount_all() {
 	for i in $(seq "$njobs");
@@ -55,34 +56,49 @@ mount_all() {
 		mkdir -p "${base_path}/chroot/${i}/var/shm"
 		mount_tmpfs -m 1777 none "${base_path}/chroot/${i}/var/shm"
 		mkdir -p "${base_path}/chroot/${i}/bin"
-		mount_null -o ro "${base_path}/bin" "${base_path}/chroot/${i}/bin"
 		mkdir -p "${base_path}/chroot/${i}/sbin"
-		mount_null -o ro "${base_path}/sbin" "${base_path}/chroot/${i}/sbin"
-		# Lib directories are "rw" to allow compat80 etc
-		# to be installed which is needed by some binary language
-		# bootstraps
 		mkdir -p "${base_path}/chroot/${i}/lib"
-		mount_null -o rw "${base_path}/lib" "${base_path}/chroot/${i}/lib"
 		mkdir -p "${base_path}/chroot/${i}/libexec"
-		mount_null -o ro "${base_path}/libexec" "${base_path}/chroot/${i}/libexec"
 		mkdir -p "${base_path}/chroot/${i}/usr/bin"
-		mount_null -o ro "${base_path}/usr/bin" "${base_path}/chroot/${i}/usr/bin"
 		mkdir -p "${base_path}/chroot/${i}/usr/sbin"
-		mount_null -o ro "${base_path}/usr/sbin" "${base_path}/chroot/${i}/usr/sbin"
 		mkdir -p "${base_path}/chroot/${i}/usr/include"
-		mount_null -o ro "${base_path}/usr/include" "${base_path}/chroot/${i}/usr/include"
 		mkdir -p "${base_path}/chroot/${i}/usr/lib"
-		mount_null -o rw "${base_path}/usr/lib" "${base_path}/chroot/${i}/usr/lib"
 		mkdir -p "${base_path}/chroot/${i}/usr/libdata"
-		mount_null -o ro "${base_path}/usr/libdata" "${base_path}/chroot/${i}/usr/libdata"
 		mkdir -p "${base_path}/chroot/${i}/usr/libexec"
-		mount_null -o ro "${base_path}/usr/libexec" "${base_path}/chroot/${i}/usr/libexec"
 		mkdir -p "${base_path}/chroot/${i}/usr/share"
-		mount_null -o ro "${base_path}/usr/share" "${base_path}/chroot/${i}/usr/share"
 		mkdir -p "${base_path}/chroot/${i}/usr/X11R7"
-		mount_null -o ro "${base_path}/usr/X11R7" "${base_path}/chroot/${i}/usr/X11R7"
 		mkdir -p "${base_path}/chroot/${i}/usr/pkgsrc"
 		mount_null -o ro "${base_path}/usr/pkgsrc" "${base_path}/chroot/${i}/usr/pkgsrc"
+		if [ "$tmpfs_base" -ne 0 ]; then
+			cp -a ${base_path}/bin/* "${base_path}/chroot/${i}/bin"
+			cp -a ${base_path}/sbin/* "${base_path}/chroot/${i}/sbin"
+			cp -a ${base_path}/lib/* "${base_path}/chroot/${i}/lib"
+			cp -a ${base_path}/libexec/* "${base_path}/chroot/${i}/libexec"
+			cp -a ${base_path}/usr/bin/* "${base_path}/chroot/${i}/usr/bin"
+			cp -a ${base_path}/usr/sbin/* "${base_path}/chroot/${i}/usr/sbin"
+			cp -a ${base_path}/usr/include/* "${base_path}/chroot/${i}/usr/include"
+			cp -a ${base_path}/usr/lib/* "${base_path}/chroot/${i}/usr/lib"
+			cp -a ${base_path}/usr/libdata/* "${base_path}/chroot/${i}/usr/libdata"
+			cp -a ${base_path}/usr/libexec/* "${base_path}/chroot/${i}/usr/libexec"
+			cp -a ${base_path}/usr/share/* "${base_path}/chroot/${i}/usr/share"
+			cp -a ${base_path}/usr/X11R7/* "${base_path}/chroot/${i}/usr/X11R7"
+		else
+			mount_null -o ro "${base_path}/bin" "${base_path}/chroot/${i}/bin"
+			mount_null -o ro "${base_path}/sbin" "${base_path}/chroot/${i}/sbin"
+			# Lib directories are "rw" to allow compat80 etc
+			# to be installed which is needed by some binary language
+			# bootstraps
+			mount_null -o rw "${base_path}/lib" "${base_path}/chroot/${i}/lib"
+			mount_null -o ro "${base_path}/libexec" "${base_path}/chroot/${i}/libexec"
+			mount_null -o ro "${base_path}/usr/bin" "${base_path}/chroot/${i}/usr/bin"
+			mount_null -o ro "${base_path}/usr/sbin" "${base_path}/chroot/${i}/usr/sbin"
+			mount_null -o ro "${base_path}/usr/include" "${base_path}/chroot/${i}/usr/include"
+			mount_null -o rw "${base_path}/usr/lib" "${base_path}/chroot/${i}/usr/lib"
+			mount_null -o ro "${base_path}/usr/libdata" "${base_path}/chroot/${i}/usr/libdata"
+			mount_null -o ro "${base_path}/usr/libexec" "${base_path}/chroot/${i}/usr/libexec"
+			mount_null -o ro "${base_path}/usr/share" "${base_path}/chroot/${i}/usr/share"
+			mount_null -o ro "${base_path}/usr/X11R7" "${base_path}/chroot/${i}/usr/X11R7"
+		fi
 		mkdir -p "${base_path}/chroot/${i}/var/tmp"
 		chmod 1777 "${base_path}/chroot/${i}/var/tmp"
 		cp -a ${base_path}/var/* "${base_path}/chroot/${i}/var"
@@ -166,14 +182,14 @@ restart_build() {
 usage() {
 	printf "Usage: bulknodes.sh [-a processor_arch]"
 	printf " [-m machine_arch] [-r os_release] "
-	printf " [-j njobs] [-b base_path]\n"
+	printf " [-j njobs] [-b base_path] [-t]\n"
 	printf " mount, umount, init-pbulk,"
 	printf " run-build, restart-build, rebuild,"
 	printf " run-postfix, stop-postfix\n"
 	exit 1
 }
 
-while getopts a:m:r:p:j:b: f
+while getopts ta:m:r:p:j:b: f
 do
 	case "$f" in
 	a)
@@ -190,6 +206,9 @@ do
 		;;
 	b)
 		base_path=$OPTARG
+		;;
+	t)
+		tmpfs_base=1
 		;;
 	\?)
 		usage
